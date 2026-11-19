@@ -11,65 +11,47 @@
 // =============================================================
 
 import { displayCreatures } from "./ui.js";
-import { getCreatures } from "./api.js";
-
+import { Createbuttons } from "./ui.js";
+import { getCreatures, getCreaturesByType } from "./api.js";
 const creatures = await getCreatures();
 displayCreatures(creatures);
-
-// let creature = [];
-// let offset = 0;
-// let page = 1;
-// let selectedType = "all";
-// let monEquipe = [];
+Createbuttons(creatures);
 
 const grid = document.getElementById("grid");
 const search = document.getElementById("search");
 const filters = document.getElementById("filters");
 const mobileFilter = document.getElementById("mobile-filter");
-
 const detail = document.getElementById("detail");
+//function for filter 
+async function filterCreatures (type){
+    let result;
+    if (type === "all"){
+        result = await getCreatures();
+    } else {
+        result =await getCreaturesByType(type) 
+    }
+    if (result){
+        displayCreatures(result);
+    }
 
+}
+filters.addEventListener("click", event => {
+    const button = event.target.closest("button[data-type]");
 
-// =============================================================
-// 2. DISPLAY + PAGINATION
-// =============================================================
+        if (!button) return;
 
-// const prev = document.getElementById("prev");
-// const next = document.getElementById("next");
-// const pageNumber = document.getElementById("page-number");
+          filterCreatures(button.dataset.type);
+    mobileFilter.value = button.dataset.type;
+    });
+    mobileFilter.addEventListener("change", () => {
+    filterCreatures(mobileFilter.value);
+});
+// function for search 
 
-// async function loadPage() {
-//     try {
-//         creatures = await Creatures(offset);
+function Search (){
+    
 
-//         console.log("Loaded creatures:", creatures);
-
-//         updateCreatures();
-
-//         pageNumber.textContent = `Page ${page}`;
-//         prev.disabled = offset === 0;
-
-//     } catch (error) {
-//         console.error("Error loading creatures:", error);
-//     }
-// }
-
-// await loadPage();
-
-// next.addEventListener("click", async function() {
-//     offset += 20;
-//     page++;
-//     await loadPage();
-// });
-
-// prev.addEventListener("click", async function() {
-//     if (offset >= 20) {
-//         offset -= 20;
-//         page--;
-//         await loadPage();
-//     }
-// });
-
+}
 // =============================================================
 // 3. DETAILS
 // =============================================================

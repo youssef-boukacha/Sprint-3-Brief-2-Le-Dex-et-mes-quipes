@@ -11,13 +11,14 @@ export async function getCreatures() {
         const creatures = await response.json();
     return creatures ;
 }
-    catch (error) {   console.error("Could not load Creatures:", error); }
+    catch (error) {   console.error("Could not load Creatures:", error) }
     
  }
-getCreaturesByType('Feu')
-export async function getCreaturesByType (creatures){
+
+
+ export async function getCreaturesByType (creaturesByType){
 try {
-    const response = await fetch(`${BaseUrl}?type=${creatures}`)
+    const response = await fetch(`${BaseUrl}?type=${creaturesByType}`)
     if (!response.ok){
         throw new Error (`HTTP error: ${response.status}`);
     }
@@ -26,4 +27,18 @@ return types ;
 }
     catch (error) {console.error ("could not load Types:", error )}
 }
-console.log(getCreaturesByType());
+
+
+export async function getCreaturesBySearch (input){
+    try {
+        const response = await fetch(`${BaseUrl}?name=${input}`)
+   
+    if (!response.ok){
+                throw new Error (`HTTP error: ${response.status}`);
+    }
+    const searchVlue = await response.json();
+
+    return searchVlue;
+}
+    catch (error) {console.error ("could not load Types:", error )}
+}
